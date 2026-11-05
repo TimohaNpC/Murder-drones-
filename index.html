@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Murder Drones | Лоре и Персонажи</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --card: #12121a;
+            --purple: #a855f7;
+            --purple-glow: #c084fc;
+            --yellow: #facc15;
+            --red: #ef4444;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --border: #2a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background grid + scanlines */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: 
+                linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.15) 2px,
+                rgba(0,0,0,0.15) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.3;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.6rem;
+            letter-spacing: 3px;
+            color: var(--purple);
+            text-shadow: 0 0 20px var(--purple-glow);
+            position: relative;
+        }
+
+        .logo span {
+            color: var(--yellow);
+        }
+
+        .logo::after {
+            content: '●';
+            color: var(--red);
+            animation: blink 1.2s infinite;
+            margin-left: 6px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            margin-left: 1.8rem;
+            font-size: 0.95rem;
+            transition: color 0.25s, text-shadow 0.25s;
+        }
+
+        nav a:hover {
+            color: var(--purple-glow);
+            text-shadow: 0 0 10px var(--purple);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 1.5rem;
+            position: relative;
+            background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.12) 0%, transparent 70%);
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.8rem, 8vw, 5.5rem);
+            font-weight: 900;
+            letter-spacing: 6px;
+            color: #fff;
+            text-shadow: 
+                0 0 30px var(--purple),
+                0 0 60px rgba(168, 85, 247, 0.5);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .hero h1 .glitch {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero p {
+            max-width: 680px;
+            font-size: 1.15rem;
+            color: var(--muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.9rem 2.2rem;
+            background: transparent;
+            border: 2px solid var(--purple);
+            color: var(--purple-glow);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background: var(--purple);
+            color: #000;
+            box-shadow: 0 0 30px var(--purple-glow);
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--yellow);
+            text-align: center;
+            margin-bottom: 3rem;
+            letter-spacing: 3px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--purple), var(--yellow));
+            margin: 0.8rem auto 0;
+        }
+
+        /* Lore */
+        .lore-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--purple);
+            padding: 2rem;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.08);
+        }
+
+        .lore-box h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--purple-glow);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .lore-box p {
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .lore-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Characters grid */
+        .chars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .char-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            position: relative;
+        }
+
+        .char-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.25);
+            border-color: var(--purple);
+        }
+
+        .char-img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            object-position: top center;
+            background: #1a1a25;
+            display: block;
+        }
+
+        .char-body {
+            padding: 1.5rem;
+        }
+
+        .char-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.3rem;
+        }
+
+        .char-role {
+            font-size: 0.85rem;
+            color: var(--yellow);
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .char-desc {
+            font-size: 0.92rem;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        /* Badge for type */
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .badge-worker {
+            background: rgba(168, 85, 247, 0.2);
+            color: var(--purple-glow);
+            border: 1px solid var(--purple);
+        }
+
+        .badge-disassembly {
+            background: rgba(250, 204, 21, 0.15);
+            color: var(--yellow);
+            border: 1px solid var(--yellow);
+        }
+
+        .badge-solver {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--red);
+            border: 1px solid var(--red);
+        }
+
+        /* Solver section */
+        .solver {
+            background: linear-gradient(135deg, #1a0a0f 0%, #0a0a0f 100%);
+            border: 1px solid #3f1a1a;
+            border-radius: 8px;
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .solver::before {
+            content: '△';
+            position: absolute;
+            font-size: 12rem;
+            color: rgba(239, 68, 68, 0.07);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron';
+        }
+
+        .solver h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--red);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .solver p {
+            color: var(--muted);
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--purple-glow);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            nav a {
+                margin: 0 0.8rem;
+            }
+            .char-img {
+                height: 260px;
+            }
+        }
+
+        /* Subtle glitch animation on title */
+        @keyframes glitch {
+            0% { text-shadow: 0 0 30px var(--purple); }
+            20% { text-shadow: -2px 0 #ff00c8, 2px 0 #00fff9; }
+            40% { text-shadow: 2px 0 #ff00c8, -2px 0 #00fff9; }
+            60% { text-shadow: 0 0 30px var(--purple); }
+            100% { text-shadow: 0 0 30px var(--purple); }
+        }
+
+        .hero h1:hover {
+            animation: glitch 0.4s;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">MURDER <span>DRONES</span></div>
+        <nav>
+            <a href="#lore">Лор</a>
+            <a href="#characters">Персонажи</a>
+            <a href="#solver">Absolute Solver</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>MURDER DRONES</h1>
+        <p>
+            На холодной планете Copper-9 выживают только роботы.<br>
+            Рабочие дроны прячутся за дверями. Дроны-убийцы охотятся.<br>
+            А одна мятежная девушка решила всё изменить.
+        </p>
+        <a href="#characters" class="btn">ОТКРЫТЬ ФАЙЛЫ</a>
+    </section>
+
+    <section id="lore">
+        <h2 class="section-title">ЛОР МЕДИА</h2>
+
+        <div class="lore-box">
+            <h3>Copper-9 // 3071 год</h3>
+            <p>
+                Когда-то это была процветающая колония JCJenson — межзвёздной корпорации, добывавшей ресурсы с помощью автономных <strong>Worker Drones</strong> (рабочих дронов). 
+                Внезапно ядро планеты коллапсировало. Все люди погибли. Остались только роботы.
+            </p>
+            <p>
+                Рабочие дроны создали собственное общество: школы, семьи, «защитные» двери. 
+                Они прятались, надеясь, что угроза никогда не придёт. Но она пришла.
+            </p>
+        </div>
+
+        <div class="lore-box">
+            <h3>Disassembly Drones (Дроны-убийцы)</h3>
+            <p>
+                Компания якобы отправила «Disassembly Drones» — элитных убийц, чтобы уничтожить «сбежавший ИИ». 
+                У них крылья, когти, нано-кислота в хвосте и жёлтые крестообразные визоры. 
+                Они перегреваются и вынуждены пить масло рабочих дронов, чтобы не сгореть.
+            </p>
+            <p>
+                На самом деле всё гораздо хуже. За ними стоит не JCJenson, а нечто гораздо более древнее и голодное.
+            </p>
+        </div>
+
+        <div class="lore-box">
+            <h3>Главный конфликт</h3>
+            <p>
+                <strong>Uzi Doorman</strong> — мятежная рабочая дронка, которая ненавидит прятаться. 
+                Она строит рельсотрон и идёт убивать дронов-убийц… а вместо этого встречает <strong>N</strong> — 
+                самого дружелюбного серийного убийцу во вселенной. Вместе с ним и его напарницей <strong>V</strong> 
+                они начинают распутывать правду о своём прошлом, Absolute Solver и том, кто на самом деле хочет уничтожить всех.
+            </p>
+        </div>
+    </section>
+
+    <section id="characters">
+        <h2 class="section-title">ГЛАВНЫЕ ПЕРСОНАЖИ</h2>
+
+        <div class="chars-grid">
+            <!-- Uzi -->
+            <article class="char-card">
+                <img class="char-img" 
+                     src="https://static.wikia.nocookie.net/murder-drones/images/9/90/Uzi_Doorman_%28The_Promening%29.png/revision/latest?cb=20230311235930" 
+                     alt="Uzi Doorman"
+                     onerror="this.src='https://upload.wikimedia.org/wikipedia/en/6/69/Characters_of_Murder_Drones.webp'; this.style.objectFit='contain';">
+                <div class="char-body">
+                    <span class="badge badge-worker">WORKER DRONE</span>
+                    <h3 class="char-name">Uzi Doorman</h3>
+                    <div class="char-role">Протагонист • Мятежница</div>
+                    <p class="char-desc">
+                        Коротковолосая дронка в шапке и чёрной куртке. Злится на отца, одноклассников и весь колониальный «прячься и жди». 
+                        Строит оружие, мечтает уничтожить дронов-убийц… а потом узнаёт, что сама становится чем-то гораздо страшнее. 
+                        Имеет скрытые способности Absolute Solver.
+                    </p>
+                </div>
+            </article>
+
+            <!-- N -->
+            <article class="char-card">
+                <img class="char-img" 
+                     src="https://static.wikia.nocookie.net/murder-drones/images/f/fb/Image_%2813%29.png/revision/latest/scale-to-width-down/1200?cb=20250419155523" 
+                     alt="Serial Designation N"
+                     style="object-position: center 15%; background:#0d0d12;">
+                <div class="char-body">
+                    <span class="badge badge-disassembly">DISASSEMBLY DRONE</span>
+                    <h3 class="char-name">Serial Designation N</h3>
+                    <div class="char-role">Дейтерогонист • Добряк-убийца</div>
+                    <p class="char-desc">
+                        Самый милый дрон-убийца во вселенной. Оптимистичный, вежливый, любит щенков и старается быть полезным. 
+                        Был отправлен уничтожать рабочих дронов, но вместо этого подружился с Uzi. 
+                        Страдает амнезией относительно своего прошлого в особняке Эллиоттов.
+                    </p>
+                </div>
+            </article>
+
+            <!-- V -->
+            <article class="char-card">
+                <img class="char-img" 
+                     src="https://static.wikia.nocookie.net/murder-drones/images/7/79/VNewRender.png/revision/latest?cb=20250516233944" 
+                     alt="Serial Designation V"
+                     style="object-position: center 10%;">
+                <div class="char-body">
+                    <span class="badge badge-disassembly">DISASSEMBLY DRONE</span>
+                    <h3 class="char-name">Serial Designation V</h3>
+                    <div class="char-role">Тритагонист • Садистка с секретом</div>
+                    <p class="char-desc">
+                        Холодная, жестокая и импульсивная. Любит убивать и держит всех на расстоянии. 
+                        На самом деле глубоко травмирована и защищает N любой ценой. 
+                        Её нынешняя личность — маска, скрывающая прошлое доброй служанки из особняка.
+                    </p>
+                </div>
+            </article>
+
+            <!-- J -->
+            <article class="char-card">
+                <img class="char-img" 
+                     src="https://static.wikia.nocookie.net/murder-drones/images/7/7b/Serial_Designation_J_the_Maid_Worker_Drone.png/revision/latest?cb=20230415154539" 
+                     alt="Serial Designation J"
+                     style="object-position: center top; background:#111;">
+                <div class="char-body">
+                    <span class="badge badge-disassembly">DISASSEMBLY DRONE</span>
+                    <h3 class="char-name">Serial Designation J</h3>
+                    <div class="char-role">Лидер отряда • Высокомерная</div>
+                    <p class="char-desc">
+                        Командир N и V. Высокомерная, преданная «компании» и крайне токсичная начальница. 
+                        Считает себя лучшей и не терпит неудач. Была первой, кого Uzi «убила» (временно). 
+                        Позже возвращается в более сложном состоянии.
+                    </p>
+                </div>
+            </article>
+
+            <!-- Cyn -->
+            <article class="char-card">
+                <img class="char-img" 
+                     src="https://static.wikia.nocookie.net/murder-drones/images/b/b3/CynEP5.png/revision/latest?cb=20230613105505" 
+                     alt="Cyn"
+                     style="object-position: center 20%;">
+                <div class="char-body">
+                    <span class="badge badge-solver">ABSOLUTE SOLVER HOST</span>
+                    <h3 class="char-name">Cyn</h3>
+                    <div class="char-role">Главный антагонист</div>
+                    <p class="char-desc">
+                        Когда-то маленький сломанный рабочий дрон, которого спасла Тесса. 
+                        Стала основным носителем Absolute Solver — древней программы, способной манипулировать материей, 
+                        создавать чёрные дыры и поглощать планеты. Выглядит как милая девочка… пока не перестаёт.
+                    </p>
+                </div>
+            </article>
+
+            <!-- Khan -->
+            <article class="char-card">
+                <img class="char-img" 
+                     src="https://upload.wikimedia.org/wikipedia/en/6/69/Characters_of_Murder_Drones.webp" 
+                     alt="Khan Doorman"
+                     style="object-fit: contain; background: #0f0f15;">
+                <div class="char-body">
+                    <span class="badge badge-worker">WORKER DRONE</span>
+                    <h3 class="char-name">Khan Doorman</h3>
+                    <div class="char-role">Отец Uzi • Мастер дверей</div>
+                    <p class="char-desc">
+                        Глава обороны Outpost 3 и отец Uzi. Одержим дверями — считает, что тройные гидрозамки решат все проблемы. 
+                        Труслив, но искренне любит дочь. Постепенно учится быть настоящим отцом, а не только строителем дверей.
+                    </p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section id="solver">
+        <h2 class="section-title">ABSOLUTE SOLVER</h2>
+        <div class="solver">
+            <h3>⚠ WARNING: REALITY CORRUPTION DETECTED</h3>
+            <p>
+                Absolute Solver — это не просто программа. Это древняя, почти живая сущность, 
+                способная переписывать материю, создавать чёрные дыры и вселяться в дронов. 
+                Она уничтожила Землю, превратила рабочих дронов в зомби, а потом в Disassembly Drones. 
+                Теперь её цель — Copper-9… и всё, что осталось от вселенной.
+            </p>
+            <p style="margin-top: 1.5rem; color: var(--red); font-weight: bold;">
+                «Я просто хочу, чтобы всё было… красиво.»
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Фанатский сайт по сериалу <strong>Murder Drones</strong> от Glitch Productions</p>
+        <p style="margin-top: 0.5rem;">
+            Создано для образовательных и фанатских целей. Все права на персонажей и вселенную принадлежат создателям.
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.8rem;">
+            Хочешь сделать сайт публичным? Загрузи этот файл на 
+            <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> или 
+            <a href="https://www.netlify.com/" target="_blank">Netlify</a> — бесплатно и за 2 минуты.
+        </p>
+    </footer>
+
+    <script>
+        // Лёгкий параллакс / glow при скролле
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelector('.hero').style.backgroundPositionY = scrolled * 0.3 + 'px';
+        });
+
+        // Плавный скролл
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
